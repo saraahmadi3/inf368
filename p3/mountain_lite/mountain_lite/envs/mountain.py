@@ -11,7 +11,7 @@ class MountainLiteEnv(gym.Env):
     def __init__(self, render_mode=None):
         
         
-        self.MAP = np.genfromtxt(os.path.join('mountain','envs','the_hill2.txt'),float)
+        self.MAP = np.genfromtxt(os.path.join('mountain_lite','envs','the_hill2.txt'),float)
         self.height = self.MAP.shape[0]  # The height of the grid
         self.width = self.MAP.shape[1]  # The width of the grid
         self._cummlative_reward = 0 
