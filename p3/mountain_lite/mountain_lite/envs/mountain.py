@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import gymnasium as gym
 from gymnasium import spaces
+from typing import Tuple
 
 
 class MountainLiteEnv(gym.Env):
@@ -18,7 +19,7 @@ class MountainLiteEnv(gym.Env):
 
         self._step = 0
         #self.graphics[15,0,:] = (173, 216, 230,0.1) #start
-
+        self.start_position = np.array([15, 0])
         # Observations are dictionaries with the agent's and the target's location.
         # Each location is encoded as an element of {0, ..., `size`}^2, i.e. MultiDiscrete([size, size]).
         self.observation_space = spaces.Dict(
@@ -70,7 +71,10 @@ class MountainLiteEnv(gym.Env):
         """
         self.window = None
         self.clock = None
-    
+        
+    def set_start_position(self,position:Tuple[int,int] = (15, 0)):
+        self.start_position = np.array([position[0], position[1]])
+
 
     def _get_obs(self):
         return {"agent": {"pos": self._agent_location}}
@@ -84,7 +88,7 @@ class MountainLiteEnv(gym.Env):
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
 
-        self._agent_location = np.array([15, 0])
+        self._agent_location = self.start_position
         self._step = 0
         self._cummlative_reward = 0
 
@@ -93,6 +97,7 @@ class MountainLiteEnv(gym.Env):
 
         observation = self._get_obs()
         info = self._get_info()
+
 
         return observation, info
     
