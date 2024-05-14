@@ -53,10 +53,10 @@ class CookieDisasterEnv(gym.Env):
         
 
      
-  
+        #ask fabio, always width/2???????????
         self.start_position = self.width/2
         
-        
+        #ask fabio new agent per new environment???? then the count thingy good good
 
 
         self.observation_space = spaces.Box(low=np.array([0,-np.inf,0]),
@@ -111,7 +111,8 @@ class CookieDisasterEnv(gym.Env):
     
     def _getReward(self, x1:float, x2:float, vel:float, x_c :float):
         if (x1< x_c and x_c <x2) or (x2< x_c and x_c <x1):
-     
+            
+            #ask fabio, always vel 4????????????????
             if abs(vel) > 4:
                 return -1,True
             else:
