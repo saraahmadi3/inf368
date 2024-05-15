@@ -1,4 +1,4 @@
-To use our trained agent make sure you have the file with our trained weights **cookie_patrol_agent.pth** and our agent **CookieAgent.py**.
+To use our trained agent make sure you have the file with our trained weights **cookie_patrol_agent_1.pth** and our agent **CookieAgent.py**.
 
 in addition you will need to have all of these requirements installed:
 numpy, torch, gymnasium
@@ -8,7 +8,7 @@ to use the trained aagent run the following code with your paths:
 ```
 from CookieAgent import CookieAgent
 
-agent = CookieAgent(save_path='cookie_patrol_agent.pth')
+agent = CookieAgent(save_path='cookie_patrol_agent_1.pth')
 ```
 
 or 
@@ -17,7 +17,7 @@ or
 from CookieAgent import CookieAgent
 
 agent = CookieAgent()
-agent.load('cookie_patrol_agent.pth')
+agent.load('cookie_patrol_agent_1.pth')
 ```
 
 to use it in an environment run the following code with your environment:
@@ -26,7 +26,7 @@ to use it in an environment run the following code with your environment:
 from CookieAgent import CookieAgent
 import gymnasium as gym
 
-agent = CookieAgent(save_path='cookie_patrol_agent.pth')
+agent = CookieAgent(save_path='cookie_patrol_agent_1.pth')
 env=gym.make('your-environment')
 state = env.reset()[0]
 
