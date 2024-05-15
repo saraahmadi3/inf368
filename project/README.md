@@ -1,37 +1,38 @@
-# Code for final project
+To use our trained agent make sure you have the file with our trained weights **cookie_patrol_agent.pth** and our agent **CookieAgent.py**.
 
-The environments for the problem assignment are provided in the file *bandits.py*. 
+in addition you will need to have all of these requirements installed:
+numpy, torch, gymnasium
 
-## Working with the bandit environment
-The bandit environment is provided in the file *bandits.py*. 
-
-Once you import the file, you can instantiate the environments **Bandits_final()**. You can then interact with this environment as you interacted with the MAB environment in the first problem set (see README.md for assignment 1).
-
-## Working with the cookiedisaster environment
-The cookiedisaster environment is provided in the file *cookiedisaster.py*. 
-
-In order to setup the *cookiedisaster* environment,  you will have to perform the following steps:
-1. Unzip *cookiedisaster.zip*
-2. Move into the directory containing the *cookiedisaster/* folder
-3. From the prompt, run the command  ```pip install -e cookiedisaster```
-
-You will then be able to instantiate the environments by loading ```cookiedisaster-v1```, ```cookiedisaster-v2``` or ```cookiedisaster-v3``` as:
-```
-import gymnasium
-import cookiedisaster
-
-env = gymnasium.make('cookiedisaster-v1')
-```
-
-In the file ```BaseAgent.py``` you will find a simple interface for your RL agent. Please provide your trained agent following this interface (plus any configuration file that will be loaded by calling the ```load()``` method). Your agent will be tested on unseen *cookiedisaster* environments by plugging it into a loop and calling its ```select_action(obs)``` method.
-
-## Working with PPO
-The *InvertedPendulum* environment is part of the *gymnasium* library.
-
-In order to setup load it, you can run:
+to use the trained aagent run the following code with your paths:
 
 ```
-import gymnasium
+from CookieAgent import CookieAgent
 
-env = gymnasium.make('InvertedPendulum-v4')
+agent = CookieAgent(save_path='cookie_patrol_agent.pth')
 ```
+
+or 
+
+```
+from CookieAgent import CookieAgent
+
+agent = CookieAgent()
+agent.load('cookie_patrol_agent.pth')
+```
+
+to use it in an environment run the following code with your environment:
+
+```
+from CookieAgent import CookieAgent
+import gymnasium as gym
+
+agent = CookieAgent(save_path='cookie_patrol_agent.pth')
+env=gym.make('your-environment')
+state = env.reset()[0]
+
+
+action = agent.select_action(state)
+next_state, reward, done, terminated, info = env.step(action)
+```
+
+**NB** the way we initialise the max width and lifetime, is through the first pass of the select_action() method. this means that for each new environent that the agent is supposed to be tested on, it is requred to initiate a new CookieAgent with the weights from cookie_patrol_agent.pth
