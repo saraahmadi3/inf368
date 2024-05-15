@@ -1,20 +1,15 @@
-import gymnasium as gym
-import cookiedisaster
 import numpy as np
-# import random
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from BaseAgent import AbstractAgent
-# print(torch.__version__)
 
 SEED=2
 np.random.seed(SEED)
 
 # important parameters that need to be updated based on the environment
-ENV_WIDTH=0.001
-ENV_LIFETIME=1
+ENV_WIDTH=10
+ENV_LIFETIME=5
 MAX_TIME=ENV_LIFETIME*10*5 # 10 cookies elapse time (lifetime*steps_per_second*nr_of_elapsed_cookies)
 
 # actor critic model
@@ -48,6 +43,8 @@ class CookieAgent(AbstractAgent):
         super().__init__()
         self.policy = PolicyNetwork(input_dim, output_dim)
         self.value = ValueNetwork(input_dim)
+        self.policy_optimizer = optim.Adam(self.policy.parameters(), lr=lr)
+        self.value_optimizer = optim.Adam(self.value.parameters(), lr=lr)
         self.epsilon = epsilon
         self.MAX_TIME=MAX_TIME
         self.ENV_LIFETIME=ENV_LIFETIME
@@ -55,13 +52,10 @@ class CookieAgent(AbstractAgent):
         self.count=0
         if save_path:
             self.load(save_path)
-        else:
-            self.policy_optimizer = optim.Adam(self.policy.parameters(), lr=lr)
-            self.value_optimizer = optim.Adam(self.value.parameters(), lr=lr)
 
     def select_action(self, observation):
         if self.count==0:
-            print('First observation:',observation)
+            # print('First observation:',observation)
             self.update_env(observation)
             self.count+=1
         observation=self.preprocess_state(observation)
@@ -118,7 +112,6 @@ class CookieAgent(AbstractAgent):
     
     def preprocess_state(self,state):
         # Assuming state is a dictionary like:
-        # {'robot': {'pos': x, 'vel': y}, 'cookie': {'pos': z, 'time': w}}
         
         robot_pos = self.normalize(state['agent']['pos'], 0, self.ENV_WIDTH)
         robot_vel = self.normalize(state['agent']['vel'], -4, 4)
